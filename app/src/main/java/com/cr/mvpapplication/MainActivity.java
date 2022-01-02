@@ -2,27 +2,19 @@ package com.cr.mvpapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-public class MainActivity extends AppCompatActivity implements IView{
-
+public class MainActivity extends AppCompatActivity implements IMainContract.View {
 
     TextView tvDrinkName;
     ProgressBar progressBar;
     Button bGetDrink;
 
-    IPresenter presenter;
+    IMainContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +24,10 @@ public class MainActivity extends AppCompatActivity implements IView{
         progressBar = findViewById(R.id.progressBar);
         bGetDrink = findViewById(R.id.bGetDrink);
 
-        presenter = new MainPresenter(this);
+        presenter = new MainPresenter(new MainRepository(
+                new RemoteDataSource(),
+                new LocalDataSouce()
+        ),this);
 
         bGetDrink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +35,12 @@ public class MainActivity extends AppCompatActivity implements IView{
                 presenter.suggestDrink();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.start();
     }
 
     @Override
@@ -60,5 +61,10 @@ public class MainActivity extends AppCompatActivity implements IView{
                 tvDrinkName.setText(drinkName);
             }
         });
+    }
+
+    @Override
+    public void setPresenter(IMainContract.Presenter presenter) {
+
     }
 }

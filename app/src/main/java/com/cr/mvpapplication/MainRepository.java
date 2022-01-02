@@ -1,56 +1,107 @@
 package com.cr.mvpapplication;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class MainRepository implements IRepository{
-    String[] drinksListRemote = {"Spiking coffee", "Sweet Bananas", "Tomato Tang", "Apple Berry Smoothie"};
-    String[] drinksListLocal = {"Mint Margarita"};
+public class MainRepository implements IDataSource{
 
-    IPresenter presenter;
+    private final IDataSource mRemoteDataSource;
+    private final IDataSource mLocalDataSource;
+    private List<String> drinksCache;
 
-    boolean isLocalDrinkAvailable;
+    boolean isCacheDirty;
 
-    public MainRepository(IPresenter presenter) {
-        this.presenter = presenter;
-        isLocalDrinkAvailable = false;
+    public MainRepository(IDataSource mRemoteDataSource, IDataSource mLocalDataSource) {
+        this.mRemoteDataSource = mRemoteDataSource;
+        this.mLocalDataSource = mLocalDataSource;
     }
 
-    void suggestDrinkLocal(){
-        String drinkName = drinksListLocal[new Random().nextInt(drinksListLocal.length)];
-        presenter.onDrinkSuggested(drinkName);
-    }
 
-    void suggestDrinkRemote(){
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        final String[] drinkName = {""};
-        //Before executing background task
+    @Override
+    public void suggestNewDrink(LoadDataCallback callback) {
+        String cachedDrink = null;
+        if (drinksCache != null && !isCacheDirty){
+            cachedDrink = getCacheDrink();
+        }
 
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
+        if (cachedDrink != null)
+            callback.onDataLoaded(cachedDrink);
 
-                //Background work here
-
-                try {
-                    Thread.sleep(1000); // Mimic server request / long execution
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        if (isCacheDirty){
+            // If the cache is dirty we need to fetch new data from the network.
+            getFromRemoteDataSource(callback);
+        }else{
+            // Query the local storage if available. If not, query the network.
+            mLocalDataSource.suggestNewDrink(new LoadDataCallback() {
+                @Override
+                public void onDataLoaded(String drinkName) {
+                    refreshCache(drinkName);
+                    callback.onDataLoaded(drinkName);
                 }
 
-                drinkName[0] = drinksListRemote[new Random().nextInt(drinksListRemote.length)];
-                presenter.onDrinkSuggested(drinkName[0]);
-            }
-        });
+                @Override
+                public void onDataNotAvailable(Exception e) {
+                    getFromRemoteDataSource(callback);
+                }
+            });
+        }
     }
 
     @Override
-    public void suggestNewDrink() {
-        if (isLocalDrinkAvailable) {
-            suggestDrinkLocal();
-        } else {
-            suggestDrinkRemote();
-        }
+    public void deleteAllDrinks() {
+
+    }
+
+    @Override
+    public void deleteDrink(String drinkName) {
+
+    }
+
+    @Override
+    public void addDrink(String drinkName) {
+
+    }
+
+    @Override
+    public void addDrinks(List<String> drinks) {
+
+    }
+
+    private void refreshLocalDataSource(String drinkName) {
+        mLocalDataSource.addDrink(drinkName);
+    }
+
+    private void refreshCache(String drinkName){
+        if (drinksCache == null)
+            drinksCache = new ArrayList<>();
+
+        // Instead of this cache is used to extract data based upon id fast
+        // Update with id logic and use hashmap instead
+
+        if (!drinksCache.contains(drinkName))
+            drinksCache.add(drinkName);
+    }
+
+    private String getCacheDrink(){
+        if (drinksCache.size() > 0)
+            return drinksCache.get(new Random().nextInt(drinksCache.size() - 1));
+        return null;
+    }
+
+    private void getFromRemoteDataSource(LoadDataCallback callback) {
+        mRemoteDataSource.suggestNewDrink(new LoadDataCallback() {
+            @Override
+            public void onDataLoaded(String drinkName) {
+                refreshCache(drinkName);
+                refreshLocalDataSource(drinkName);
+                callback.onDataLoaded(drinkName);
+            }
+
+            @Override
+            public void onDataNotAvailable(Exception e) {
+                callback.onDataNotAvailable(e);
+            }
+        });
     }
 }
