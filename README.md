@@ -1,9 +1,9 @@
 # Drink Suggester
 
-This project is a reference code made for the video MVP | Model View Presenter with Repository Pattern. 
+This project is a reference code made for the video MVVM | Model View View-Model. 
 
 ### Tutorial
-Checkout the explanation here: https://youtu.be/x8dXXFBfHCk
+Checkout the explanation here: 
 
 ## Getting Started
 
