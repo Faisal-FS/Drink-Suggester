@@ -1,13 +1,16 @@
 # Drink Suggester
 
-This project is a reference code made for the video MVVM | Model View View-Model. 
+This project is a reference code made for the video MVVM | Model View View-Model.
+
+Branch: mvvm
 
 ### Tutorial
 Checkout the explanation here: 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+These instructions will get you a copy of the project up and 
+running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
