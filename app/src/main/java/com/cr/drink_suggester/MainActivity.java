@@ -1,6 +1,8 @@
 package com.cr.drink_suggester;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.View;
@@ -13,13 +15,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
-    String[] drinksListRemote = {"Spiking coffee", "Sweet Bananas", "Tomato Tang",
-            "Apple Berry Smoothie", "Coding Reel Coffee"};
-
 
     TextView tvDrinkName;
     ProgressBar progressBar;
     Button bGetDrink;
+
+    MainViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,41 +30,29 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         bGetDrink = findViewById(R.id.bGetDrink);
 
+        mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+        mViewModel.getProgress().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer visibility) {
+                progressBar.setVisibility(visibility);
+            }
+        });
+
+        mViewModel.getDrink().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String drinkName) {
+                tvDrinkName.setText(drinkName);
+            }
+        });
+
         bGetDrink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                suggestNewDrink();
+                mViewModel.suggestNewDrink();
             }
         });
     }
 
-    public void suggestNewDrink() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        //Before executing background task
-        progressBar.setVisibility(View.VISIBLE);
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
 
-                //Background work here
-                try {
-                    Thread.sleep(1000); // Mimic server request / long execution
-
-                    String drinkName = drinksListRemote[new Random()
-                            .nextInt(drinksListRemote.length)];
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            tvDrinkName.setText(drinkName);
-                            progressBar.setVisibility(View.INVISIBLE);
-                        }
-                    });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 }
