@@ -1,7 +1,9 @@
 package com.cr.mvpapplication;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements IMainContract.Vie
 
     IMainContract.Presenter presenter;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements IMainContract.Vie
 
         presenter = new MainPresenter(new MainRepository(
                 new RemoteDataSource(),
-                new LocalDataSouce()
+                new LocalDataSource(getAssets())
         ),this);
 
         bGetDrink.setOnClickListener(new View.OnClickListener() {
