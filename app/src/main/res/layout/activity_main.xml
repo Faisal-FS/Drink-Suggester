@@ -7,6 +7,8 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,6 +16,43 @@
         android:text="CR Drinks Suggester"
         android:textSize="30sp"
         android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:hint="Email"
+        />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint="Password"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bLogin"
+        android:layout_gravity="center"
+        android:text="Login"
+        />
+
+
+
+    <TextView
+        android:id="@+id/tvLoginResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Not logged in"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="wrap_content"
