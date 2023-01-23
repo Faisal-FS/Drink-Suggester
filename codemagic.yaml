@@ -7,6 +7,9 @@ workflows:
       vars:
         PACKAGE_NAME: "com.palfs.mvcapplication"
     scripts:
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
       - name: Build Android APK
         working_directory: android
         script: ./gradlew assembleDebug
