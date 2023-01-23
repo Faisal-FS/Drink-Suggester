@@ -1,0 +1,25 @@
+workflows:
+  native-android:
+    name: Native Android
+    max_build_duration: 30
+    instance_type: mac_mini_m1
+    environment:
+      vars:
+        PACKAGE_NAME: "com.palfs.mvcapplication"
+    scripts:
+      - name: Set Android SDK location
+        script: | 
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+      - name: Build Android release
+        script: | 
+          UPDATED_BUILD_NUMBER=$BUILD_NUMBER
+          ./gradlew assemble
+    artifacts:
+      - app/build/outputs/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - pyrata786@gmail.com
+        notify:
+          success: true
+          failure: true
