@@ -6,6 +6,10 @@ workflows:
       vars:
         PACKAGE_NAME: "com.palfs.mvcapplication"
     scripts:
+      - name: Make gradle executable
+        script: |
+          echo pwd
+          chmod +x gradlew
       - name: Set Android SDK location
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
