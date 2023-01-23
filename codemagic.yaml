@@ -10,12 +10,11 @@ workflows:
       - name: Set Android SDK location
         script: | 
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
-      - name: Build Android release
-        script: | 
-          UPDATED_BUILD_NUMBER=$BUILD_NUMBER
-          ./gradlew assemble
+      - name: Build Android APK
+        working_directory: android
+        script: ./gradlew assembleDebug
     artifacts:
-      - app/build/outputs/**/*.apk
+      - app/build/outputs/**/**/*.apk
     publishing:
       email:
         recipients:
