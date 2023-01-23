@@ -8,7 +8,7 @@ workflows:
     scripts:
       - name: Make gradle executable
         script: |
-          echo pwd
+          cd Drink-Suggester
           chmod +x gradlew
       - name: Set Android SDK location
         script: |
