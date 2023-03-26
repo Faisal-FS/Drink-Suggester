@@ -17,6 +17,10 @@ public class MainViewModel extends ViewModel {
         mProgressMutableData.postValue(View.INVISIBLE);
         mDrinksMutableData.postValue("");
         mMainRepository = new MainRepository();
+        String lastSuggestedDrink = mMainRepository.lastSuggestedDrink();
+        if (lastSuggestedDrink != null){
+            mDrinksMutableData.postValue(lastSuggestedDrink);
+        }
     }
 
     public void suggestNewDrink(){

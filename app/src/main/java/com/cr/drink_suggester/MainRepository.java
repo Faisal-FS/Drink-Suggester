@@ -13,6 +13,10 @@ public class MainRepository {
     public MainRepository() {
     }
 
+    public String lastSuggestedDrink(){
+        return SharedPreferencesDataSource.getInstance().getLastSuggestedDrink();
+    }
+
     public void suggestNewDrink(IDrinkCallback drinkCallback) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         //Before executing background task
@@ -27,6 +31,7 @@ public class MainRepository {
 
                     String drinkName = drinksListRemote[new Random()
                             .nextInt(drinksListRemote.length)];
+                    setLastSuggestedDrink(drinkName);
                     drinkCallback.onDrinkSuggested(drinkName);
                 } catch (InterruptedException e) {
                     drinkCallback.onErrorOccurred();
@@ -37,6 +42,10 @@ public class MainRepository {
                 }
             }
         });
+    }
+
+    private void setLastSuggestedDrink(String drinkName) {
+        SharedPreferencesDataSource.getInstance().setSuggestedDrink(drinkName);
     }
 
     public interface IDrinkCallback {
