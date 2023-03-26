@@ -5,7 +5,7 @@ This project is a reference code made for the video MVVM | Model View View-Model
 Branch: mvvm
 
 ### Tutorial
-Checkout the explanation here: 
+Checkout the explanation here: https://youtu.be/g_zeDAOUXn4
 
 ## Getting Started
 
