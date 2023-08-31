@@ -7,7 +7,8 @@ Checkout the explanation here: https://youtu.be/x8dXXFBfHCk
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+MVP architecture diagram : 
+![Alt text](<MVP _ Model View Presenter with Repository Pattern.png>)
 
 ### Prerequisites
 
