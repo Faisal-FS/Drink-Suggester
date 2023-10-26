@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements IMainContract.Vie
 
         presenter = new MainPresenter(new MainRepository(
                 new RemoteDataSource(),
-                new LocalDataSource(getAssets())
+                new LocalDataSource()
         ),this);
 
         bGetDrink.setOnClickListener(new View.OnClickListener() {

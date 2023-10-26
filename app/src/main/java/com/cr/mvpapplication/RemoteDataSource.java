@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 public class RemoteDataSource implements IDataSource{
     String[] drinksListRemote = {"Spiking coffee", "Sweet Bananas", "Tomato Tang", "Apple Berry Smoothie"};
 
@@ -34,22 +35,9 @@ public class RemoteDataSource implements IDataSource{
     }
 
     @Override
-    public void deleteAllDrinks() {
-
-    }
-
-    @Override
-    public void deleteDrink(String drinkName) {
-
-    }
-
-    @Override
     public void addDrink(String drinkName) {
 
     }
-
-    @Override
-    public void addDrinks(List<String> drinks) {
-
-    }
 }
+
+
