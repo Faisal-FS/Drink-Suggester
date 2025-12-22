@@ -1,11 +1,11 @@
 # Drink Suggester
 
-This project is a reference code made for the video MVVM | Model View View-Model.
+This project is a reference code made for the video SharedPreferences in MVVM in android studio.
 
 Branch: mvvm
 
 ### Tutorial
-Checkout the explanation here: 
+Checkout the explanation here: https://www.youtube.com/watch?v=EWIlxY-_pDY
 
 ## Getting Started
 
